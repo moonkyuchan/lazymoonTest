@@ -1,13 +1,13 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Main from "./sector/Main/Main";
+import App from "./App";
 
 class Routes extends React.Component {
   render() {
     return (
       <Router>
         <Switch>
-          <Route exact path="/" component={Main} />
+          <Route exact path="/" component={App} />
         </Switch>
       </Router>
     );

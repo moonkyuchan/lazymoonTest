@@ -1,13 +1,15 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+import { BiSearchAlt2 } from "react-icons/bi";
+import { AiOutlineMenu } from "react-icons/ai";
 
 const Nav = () => {
-  let history = useHistory();
+  const history = useHistory();
 
-  const goHome = () => {
+  function goHome() {
     history.push("/");
-  };
+  }
 
   return (
     <NavBack>
@@ -18,14 +20,14 @@ const Nav = () => {
       </NavLeft>
       <NavCenter onClick={goHome}>LazyMoon</NavCenter>
       <NavRight>
-        <span>돋보기</span>
-        <span>메뉴바</span>
+        <BiSearchAlt2 className="search" />
+        <AiOutlineMenu className="menuBar" />
       </NavRight>
     </NavBack>
   );
 };
 
-const NavBack = styled.section`
+const NavBack = styled.nav`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -42,7 +44,7 @@ const NavLeft = styled.div`
 `;
 
 const Title = styled.button`
-  width: 33.33%;
+  width: 35%;
   font-size: 20px;
   font-weight: 400;
   color: #9e9e9e;
@@ -52,7 +54,7 @@ const Title = styled.button`
   }
 `;
 const Profile = styled.button`
-  width: 33.33%;
+  width: 31%;
   font-size: 20px;
   font-weight: 400;
   color: #9e9e9e;
@@ -62,7 +64,7 @@ const Profile = styled.button`
   }
 `;
 const Github = styled.button`
-  width: 33.33%;
+  width: 31%;
   font-size: 20px;
   font-weight: 400;
   color: #9e9e9e;
@@ -84,7 +86,15 @@ const NavCenter = styled.span`
 const NavRight = styled.div`
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   width: 20%;
+  padding-right: 25px;
+  .search,
+  .menuBar {
+    align-items: center;
+    font-size: 25px;
+    margin: 0 10px;
+  }
 `;
 
 export default Nav;

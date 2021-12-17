@@ -1,9 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import GlobalStyle from "./Styles/Global";
-// import App from "./App";
-import Main from "./Components/Main/Main";
-import Nav from "./Components/Nav/Nav";
+import Main from "./Pages/Main/Main";
+import Signup from "./Pages/SignUp/Signup.tsx";
+import Nav from "./Pages/Nav/Nav.tsx";
 
 class Routes extends React.Component {
   render() {
@@ -14,7 +14,7 @@ class Routes extends React.Component {
           <Nav />
           <Switch>
             <Route exact path="/" component={Main} />
-            <Route path="/">Not Fonund</Route>
+            <Route exact path="/signup" component={Signup} />
           </Switch>
         </Router>
       </>

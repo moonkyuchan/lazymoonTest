@@ -10,7 +10,8 @@ const GlobalStyle = createGlobalStyle`
     color: #333333;
     font-size: 13px;
     line-height: 16px;
-   font-family: "Tw Cen W01 Medium";
+    font-family: "Tw Cen W01 Medium";
+    background-color: #e1f5fe;
   }
   ul, li {
     list-style: none;

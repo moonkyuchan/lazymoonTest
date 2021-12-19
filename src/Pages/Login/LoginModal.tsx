@@ -2,24 +2,24 @@ import React from "react";
 import styled from "styled-components";
 import InputComponent from "../../Components/Common/CommonInput";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { SignupData, SignUpType } from "../../Data/Signup/SignupMock";
+import { LoginData, LoginDataType } from "../../Data/Login/LoginMock";
 
 type propsType = {
-  openCloseSignup: any;
+  openCloseLogin: any;
 };
 
-const SignupModal: React.FC<propsType> = ({ openCloseSignup }) => {
+const LoginModal: React.FC<propsType> = ({ openCloseLogin }) => {
   return (
     <SignUpBack>
       <ModalContainer>
-        <AiOutlineCloseCircle className="closebtn" onClick={openCloseSignup} />
-        <Title>Sign up</Title>
+        <AiOutlineCloseCircle className="closebtn" onClick={openCloseLogin} />
+        <Title>Login</Title>
         <InputTemplate>
-          {SignupData.map((data: SignUpType) => {
-            return <InputComponent data={data as SignUpType} />;
+          {LoginData.map((data: LoginDataType) => {
+            return <InputComponent data={data} />;
           })}
         </InputTemplate>
-        <SubmitBtn>Sign up</SubmitBtn>
+        <SubmitBtn>Login</SubmitBtn>
         <GoogleSignup>Google</GoogleSignup>
       </ModalContainer>
     </SignUpBack>
@@ -115,4 +115,4 @@ const GoogleSignup = styled.button`
   }
 `;
 
-export default SignupModal;
+export default LoginModal;

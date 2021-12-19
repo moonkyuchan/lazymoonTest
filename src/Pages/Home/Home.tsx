@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 
-const Main = () => {
+const Home = () => {
   return <MainBack></MainBack>;
 };
 
 const MainBack = styled.main``;
-export default Main;
+export default Home;

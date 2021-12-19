@@ -1,9 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import GlobalStyle from "./Styles/Global";
-import Main from "./Pages/Main/Main";
-import Signup from "./Pages/SignUp/Signup.tsx";
+import Home from "./Pages/Home/Home";
 import Nav from "./Pages/Nav/Nav.tsx";
+import News from "./Pages/News/News.tsx";
 
 class Routes extends React.Component {
   render() {
@@ -13,8 +13,8 @@ class Routes extends React.Component {
         <Router>
           <Nav />
           <Switch>
-            <Route exact path="/" component={Main} />
-            <Route exact path="/signup" component={Signup} />
+            <Route exact path="/" component={Home} />
+            <Route exact path="/news" component={News} />
           </Switch>
         </Router>
       </>

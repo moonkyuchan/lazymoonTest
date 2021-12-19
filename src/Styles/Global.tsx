@@ -11,7 +11,7 @@ const GlobalStyle = createGlobalStyle`
     font-size: 13px;
     line-height: 16px;
     font-family: "Tw Cen W01 Medium";
-    background-color: #e1f5fe;
+    background-color: #fafafa;
   }
   ul, li {
     list-style: none;

@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import ArticleCard from "../../Components/Common/ArticleCard";
+import { NEWS_API_KEY } from "../../config";
+import { GetHeadlineType } from "../../API/Model/News_Headline";
 import axios from "axios";
 
 const News = () => {
-  const [news, setNews] = useState<object>({});
-  console.log(news, "news");
+  const [news, setNews] = useState<GetHeadlineType>();
+  console.log(news);
 
   useEffect(() => {
     async function getNews() {
-      await axios("").then((res) => {
-        setNews(res);
+      await axios("https://newsapi.org/v2/top-headlines?country=kr", {
+        headers: { Authorization: NEWS_API_KEY },
+      }).then((res) => {
+        setNews(res.data);
       });
     }
     getNews();
@@ -21,16 +25,7 @@ const News = () => {
       <Title>Today's News</Title>
       <SerachNews placeholder="Search" />
       <ArticleTemplate>
-        <ArticleCard />
-        <ArticleCard />
-        <ArticleCard />
-        <ArticleCard />
-        <ArticleCard />
-        <ArticleCard />
-        <ArticleCard />
-        <ArticleCard />
-        <ArticleCard />
-        <ArticleCard />
+        <ArticleCard news={news} />
       </ArticleTemplate>
     </NewsBack>
   );
@@ -71,8 +66,9 @@ const ArticleTemplate = styled.article`
   grid-gap: 30px 0;
   width: 100%;
   height: 100%;
-  background-color: yellow;
   margin-top: 50px;
+  background-color: #eceff1;
+  border-radius: 5px;
 `;
 
 export default News;

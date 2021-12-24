@@ -6,26 +6,70 @@ import { GetHeadlineType } from "../../API/Model/News_Headline";
 import axios from "axios";
 
 const News = () => {
+  const _ = require("lodash");
   const [news, setNews] = useState<GetHeadlineType>();
-  console.log(news);
+  const [searchValue, setSearchValue] = useState<string>("");
 
   useEffect(() => {
-    async function getNews() {
-      await axios("https://newsapi.org/v2/top-headlines?country=kr", {
+    getNewsDefault();
+  }, []);
+
+  useEffect(() => {
+    getNewsBySearch(searchValue);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchValue]);
+
+  const getNewsDefault = async () => {
+    await axios("https://newsapi.org/v2/top-headlines?country=kr", {
+      headers: { Authorization: NEWS_API_KEY },
+    }).then((res) => {
+      setNews(res.data);
+    });
+  };
+
+  const getNewsBySearch = async (query: string) => {
+    if (query.length === 0) return;
+    try {
+      await axios(`https://newsapi.org/v2/everything?q=${searchValue}`, {
         headers: { Authorization: NEWS_API_KEY },
       }).then((res) => {
         setNews(res.data);
       });
+    } catch (e) {
+      console.log(e);
     }
-    getNews();
-  }, []);
+  };
+
+  const wrappedOnChange = _.debounce(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      handleSearchInput(event.target.value);
+    },
+    1000
+  );
+
+  const handleSearchInput = (query: string) => {
+    setSearchValue(query);
+    if (query.trim() === "") {
+      getNewsDefault();
+    }
+  };
 
   return (
     <NewsBack>
       <Title>Today's News</Title>
-      <SerachNews placeholder="Search" />
+      <SerachNewsInput placeholder="Search" onChange={wrappedOnChange} />
       <ArticleTemplate>
-        <ArticleCard news={news} />
+        {/* {news &&
+          news?.articles.map((data, idx) => {
+            return <ArticleCard data={data} key={idx} />;
+          })}
+        {searchNews &&
+          searchNews?.articles.map((data, idx) => {
+            return <ArticleCard data={data} key={idx} />;
+          })} */}
+        {news?.articles.map((data, idx) => {
+          return <ArticleCard data={data} key={idx} />;
+        })}
       </ArticleTemplate>
     </NewsBack>
   );
@@ -49,7 +93,7 @@ const Title = styled.span`
   justify-content: center;
 `;
 
-const SerachNews = styled.input`
+const SerachNewsInput = styled.input`
   width: 350px;
   height: 40px;
   border: 2px solid #cfd8dc;
@@ -67,7 +111,6 @@ const ArticleTemplate = styled.article`
   width: 100%;
   height: 100%;
   margin-top: 50px;
-  background-color: #eceff1;
   border-radius: 5px;
 `;
 

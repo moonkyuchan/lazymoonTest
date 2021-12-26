@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import ArticleCard from "../../Components/Common/ArticleCard";
 import { NEWS_API_KEY } from "../../config";
-import { GetHeadlineType } from "../../API/Model/News_Headline";
+import { GetHeadlineType } from "../../API/Type/News_API_Type";
 import axios from "axios";
 
-const News = () => {
+interface StyleProps {
+  isLoading?: boolean;
+}
+
+const News: React.FC = () => {
   const _ = require("lodash");
   const [news, setNews] = useState<GetHeadlineType>();
   const [searchValue, setSearchValue] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     getNewsDefault();
@@ -20,15 +25,22 @@ const News = () => {
   }, [searchValue]);
 
   const getNewsDefault = async () => {
-    await axios("https://newsapi.org/v2/top-headlines?country=kr", {
-      headers: { Authorization: NEWS_API_KEY },
-    }).then((res) => {
-      setNews(res.data);
-    });
+    setIsLoading(true);
+    try {
+      await axios("https://newsapi.org/v2/top-headlines?country=kr", {
+        headers: { Authorization: NEWS_API_KEY },
+      }).then((res) => {
+        setNews(res.data);
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    setIsLoading(false);
   };
 
   const getNewsBySearch = async (query: string) => {
     if (query.length === 0) return;
+    setIsLoading(true);
     try {
       await axios(`https://newsapi.org/v2/everything?q=${searchValue}`, {
         headers: { Authorization: NEWS_API_KEY },
@@ -38,13 +50,14 @@ const News = () => {
     } catch (e) {
       console.log(e);
     }
+    setIsLoading(false);
   };
 
   const wrappedOnChange = _.debounce(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       handleSearchInput(event.target.value);
     },
-    1000
+    500
   );
 
   const handleSearchInput = (query: string) => {
@@ -58,18 +71,14 @@ const News = () => {
     <NewsBack>
       <Title>Today's News</Title>
       <SerachNewsInput placeholder="Search" onChange={wrappedOnChange} />
-      <ArticleTemplate>
-        {/* {news &&
+      <ArticleTemplate isLoading={isLoading}>
+        {isLoading ? (
+          <IsLoadingPage> IsLoading ...</IsLoadingPage>
+        ) : (
           news?.articles.map((data, idx) => {
             return <ArticleCard data={data} key={idx} />;
-          })}
-        {searchNews &&
-          searchNews?.articles.map((data, idx) => {
-            return <ArticleCard data={data} key={idx} />;
-          })} */}
-        {news?.articles.map((data, idx) => {
-          return <ArticleCard data={data} key={idx} />;
-        })}
+          })
+        )}
       </ArticleTemplate>
     </NewsBack>
   );
@@ -103,7 +112,7 @@ const SerachNewsInput = styled.input`
   color: gray;
 `;
 
-const ArticleTemplate = styled.article`
+const ArticleTemplate = styled.article<StyleProps>`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   place-items: center;
@@ -112,6 +121,24 @@ const ArticleTemplate = styled.article`
   height: 100%;
   margin-top: 50px;
   border-radius: 5px;
+  ${(props) =>
+    props.isLoading === true &&
+    css`
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    `}
+`;
+
+const IsLoadingPage = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 100px;
+  border: 2px solid gray;
+  border-radius: 40px;
+  font-size: 20px;
 `;
 
 export default News;

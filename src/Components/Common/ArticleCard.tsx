@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { articleObj } from "../../API/Model/News_Headline";
+import { articleObj } from "../../API/Type/News_API_Type";
 
 type articleProps = {
   data: articleObj;

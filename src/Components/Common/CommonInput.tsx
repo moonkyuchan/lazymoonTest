@@ -2,14 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import { SignUpType } from "../../Data/Signup/SignupMock";
 
-type styleProps = {
+interface StyleProps {
   color: string;
   size: string;
-};
-
-type InputProps = {
+}
+interface InputProps {
   data?: SignUpType;
-};
+}
 
 const InputComponent = ({ data }: InputProps) => {
   return (
@@ -30,7 +29,7 @@ const InputBack = styled.article`
   justify-content: center;
 `;
 
-const InputTitle: any = styled.div<styleProps>`
+const InputTitle: any = styled.div<StyleProps>`
   width: 100px;
   font-weight: bold;
   color: ${(props) => props.color};

@@ -1,21 +1,27 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { BiSearchAlt2 } from "react-icons/bi";
 import { AiOutlineMenu } from "react-icons/ai";
 import SignupModal from "../SignUp/SignupModal";
 import LoginModal from "../Login/LoginModal";
+import { NavTitle, NavTitleType } from "../../Data/Nav/NavTitle";
+
+interface StyleProps extends NavTitleType {
+  selectedTab: string | undefined;
+}
 
 const Nav: React.FC = () => {
   const history = useHistory();
   const [openLogin, setOpenLogin] = useState<boolean>(false);
   const [openSign, setOpenSign] = useState<boolean>(false);
+  const [selectedTab, setSelectedTab] = useState<string | undefined>("HOME");
 
-  function goHome() {
-    history.push("/");
-  }
-  const goNews = () => {
-    history.push("/news");
+  const handleNavTitle = (data: NavTitleType) => {
+    if (data?.path) {
+      history.push(data.path);
+    }
+    setSelectedTab(data.title);
   };
 
   const openCloseSignup = () => {
@@ -29,10 +35,19 @@ const Nav: React.FC = () => {
   return (
     <NavBack>
       <NavLeft>
-        <Title onClick={goHome}>Home</Title>
-        <Title>Profile</Title>
-        <Title>Github</Title>
-        <Title onClick={goNews}>News</Title>
+        {NavTitle.map((data: NavTitleType) => {
+          return (
+            <Title
+              key={data.id}
+              path={data.path}
+              title={data.title}
+              selectedTab={selectedTab}
+              onClick={() => handleNavTitle(data)}
+            >
+              {data.title}
+            </Title>
+          );
+        })}
       </NavLeft>
       <NavCenter>LazyMoon</NavCenter>
       <NavRight>
@@ -63,7 +78,7 @@ const NavLeft = styled.div`
   width: 25%;
 `;
 
-const Title = styled.button`
+const Title = styled.button<StyleProps>`
   width: 140px;
   font-size: 20px;
   font-weight: 800;
@@ -71,6 +86,11 @@ const Title = styled.button`
   :hover {
     color: #333333;
   }
+  ${(props) =>
+    props.title === props.selectedTab &&
+    css`
+      color: #333333;
+    `}
 `;
 // const Profile = styled.button`
 //   width: 31%;

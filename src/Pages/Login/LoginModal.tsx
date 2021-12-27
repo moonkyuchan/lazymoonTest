@@ -4,19 +4,21 @@ import InputComponent from "../../Components/Common/CommonInput";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { LoginData, LoginDataType } from "../../Data/Login/LoginMock";
 
-type propsType = {
+interface PropsType {
   openCloseLogin: any;
-};
+  emailValue?: any;
+  pwValue?: any;
+}
 
-const LoginModal: React.FC<propsType> = ({ openCloseLogin }) => {
+const LoginModal: React.FC<PropsType> = ({ openCloseLogin }) => {
   return (
     <SignUpBack>
       <ModalContainer>
         <AiOutlineCloseCircle className="closebtn" onClick={openCloseLogin} />
         <Title>Login</Title>
         <InputTemplate>
-          {LoginData.map((data: LoginDataType) => {
-            return <InputComponent data={data} />;
+          {LoginData.map((data: LoginDataType, idx) => {
+            return <InputComponent key={idx} data={data} />;
           })}
         </InputTemplate>
         <SubmitBtn>Login</SubmitBtn>
@@ -46,7 +48,7 @@ const ModalContainer = styled.div`
   transform: translate(-50%, -50%);
   max-height: 80%;
   width: 40rem;
-  height: 80%;
+  height: 60%;
   padding: 45px;
   background: #eceff1;
   border-radius: 10px;
@@ -90,13 +92,14 @@ const InputTemplate = styled.section`
 const SubmitBtn = styled.button`
   font-size: 20px;
   font-weight: bolder;
-  width: 200px;
-  height: 50px;
+  width: 250px;
+  height: 35px;
   margin-top: 55px;
   border: 2px solid gray;
   border-radius: 10px;
+  background-color: white;
   &:hover {
-    background-color: gray;
+    background-color: black;
     color: white;
   }
 `;
@@ -104,13 +107,14 @@ const SubmitBtn = styled.button`
 const GoogleSignup = styled.button`
   font-size: 20px;
   font-weight: bolder;
-  width: 200px;
-  height: 50px;
+  width: 250px;
+  height: 35px;
   margin-top: 20px;
   border: 2px solid gray;
   border-radius: 10px;
+  background-color: white;
   &:hover {
-    background-color: gray;
+    background-color: black;
     color: white;
   }
 `;

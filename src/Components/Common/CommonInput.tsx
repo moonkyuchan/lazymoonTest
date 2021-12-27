@@ -7,16 +7,44 @@ interface StyleProps {
   size: string;
 }
 interface InputProps {
-  data?: SignUpType;
+  data: SignUpType;
+  emailValue?: any;
+  pwValue?: any;
+  RepwValue?: any;
+  resetError?: any;
 }
 
-const InputComponent = ({ data }: InputProps) => {
+const InputComponent: React.FC<InputProps> = ({
+  data,
+  emailValue,
+  pwValue,
+  RepwValue,
+  resetError,
+}) => {
+  const onChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    data: SignUpType
+  ) => {
+    if (data.title === "Email") {
+      emailValue(e.target.value);
+    } else if (data.title === "Password") {
+      pwValue(e.target.value);
+    } else if (data.title === "RePassword") {
+      RepwValue(e.target.value);
+    }
+  };
+
   return (
     <InputBack key={data?.id}>
-      <InputTitle color size>
-        {data?.title}
-      </InputTitle>
-      <InputTag placeholder={data?.placeholder} />
+      <InputTitle>{data?.title}</InputTitle>
+      <InputTag
+        placeholder={data?.placeholder}
+        type={data?.type}
+        onChange={(e) => {
+          onChange(e, data);
+        }}
+        onFocus={resetError}
+      />
     </InputBack>
   );
 };

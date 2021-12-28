@@ -18,13 +18,14 @@ const MainBack = styled.main`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   padding: 20px 100px;
-  width: 100%;
-  height: 100%;
+  min-width: 1280px;
 `;
 
 const MainTemplate1 = styled.section`
   display: flex;
-  width: 100%;
+  width: 50rem;
+  height: 100%;
 `;
 export default Home;

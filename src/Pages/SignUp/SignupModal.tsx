@@ -61,6 +61,9 @@ const SignupModal: React.FC<propsType> = ({ openCloseSignup }) => {
                 pwValue={pwValue}
                 RepwValue={RepwValue}
                 resetError={resetError}
+                email={email}
+                password={password}
+                repassword={repassword}
               />
             );
           })}

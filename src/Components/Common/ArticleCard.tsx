@@ -8,11 +8,9 @@ type articleProps = {
 
 const ArticleCard: React.FC<articleProps> = ({ data }) => {
   return (
-    <ArticleCardBack>
-      <a href={data.url} target="_blank" rel="noopener noreferrer">
-        <ArticleImg src={data.urlToImage} />
-        <ArticleTitle>{data.title}</ArticleTitle>
-      </a>
+    <ArticleCardBack onClick={() => window.open(data.url)}>
+      <ArticleImg src={data.urlToImage} />
+      <ArticleTitle>{data.title}</ArticleTitle>
     </ArticleCardBack>
   );
 };
@@ -22,32 +20,35 @@ const ArticleCardBack = styled.article`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 300px;
-  height: 400px;
-  border: 2px solid #eceff1;
+  width: 220px;
+  height: 300px;
+  border: 1px solid #eceff1;
   border-radius: 5px;
-  padding: 15px;
+  padding: 10px;
   background-color: white;
-  box-shadow: 2px 2px #eceff1;
   cursor: pointer;
+  &:hover {
+    background-color: #eceff1;
+  }
 `;
 
 const ArticleImg = styled.img`
-  width: 250px;
-  height: 260px;
+  width: 170px;
+  height: 200px;
   /* border: 0px solid gray; */
   border-radius: 7px;
 `;
 
 const ArticleTitle = styled.div`
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
-  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 10px;
   font-weight: bolder;
-  padding-top: 20px;
-  width: 250px;
-  height: 45px;
+  padding-top: 15px;
+  width: 150px;
+  height: 70px;
   /* overflow: hidden;
   text-overflow: ellipsis; */
   /* display: -webkit-box;

@@ -3,7 +3,8 @@ import { useHistory } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { BiSearchAlt2 } from "react-icons/bi";
 import { AiOutlineMenu } from "react-icons/ai";
-import SignupModal from "../SignUp/SignupModal";
+// import SignupModal from "../SignUp/SignupModal";
+import Signup from "../SignUp/Signup";
 import LoginModal from "../Login/LoginModal";
 import { NavTitle, NavTitleType } from "../../Data/Nav/NavTitle";
 
@@ -24,7 +25,7 @@ const Nav: React.FC = () => {
     setSelectedTab(data.title);
   };
 
-  const openCloseSignup = () => {
+  const openCloseSignup = (): void => {
     setOpenSign(!openSign);
   };
 
@@ -54,7 +55,7 @@ const Nav: React.FC = () => {
         <LoginTitle onClick={openCloseLogin}>Login</LoginTitle>
         {openLogin && <LoginModal openCloseLogin={openCloseLogin} />}
         <SignupTitle onClick={openCloseSignup}>Sign up</SignupTitle>
-        {openSign && <SignupModal openCloseSignup={openCloseSignup} />}
+        {openSign && <Signup openCloseSignup={openCloseSignup} />}
         <BiSearchAlt2 className="search" />
         <AiOutlineMenu className="menuBar" />
       </NavRight>
@@ -67,7 +68,7 @@ const NavBack = styled.nav`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100vw;
+  min-width: 1280px;
   height: 150px;
   padding: 40px 50px;
 `;
@@ -75,13 +76,13 @@ const NavBack = styled.nav`
 const NavLeft = styled.div`
   display: flex;
   align-items: center;
-  width: 25%;
+  width: 300px;
 `;
 
 const Title = styled.button<StyleProps>`
   width: 140px;
-  font-size: 20px;
-  font-weight: 800;
+  font-size: 15px;
+  font-weight: 700;
   color: #9e9e9e;
   :hover {
     color: #333333;
@@ -92,30 +93,12 @@ const Title = styled.button<StyleProps>`
       color: #333333;
     `}
 `;
-// const Profile = styled.button`
-//   width: 31%;
-//   font-size: 20px;
-//   font-weight: 800;
-//   color: #9e9e9e;
-//   :hover {
-//     color: #333333;
-//   }
-// `;
-// const Github = styled.button`
-//   width: 31%;
-//   font-size: 20px;
-//   font-weight: 800;
-//   color: #9e9e9e;
-//   :hover {
-//     color: #333333;
-//   }
-// `;
 
 const NavCenter = styled.span`
   display: flex;
   justify-content: center;
-  width: 50%;
-  font-size: 50px;
+  width: 600px;
+  font-size: 3.5rem;
   font-weight: 900;
   cursor: pointer;
 `;
@@ -124,12 +107,11 @@ const NavRight = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  width: 25%;
-  padding-right: 50px;
+  width: 300px;
   .search,
   .menuBar {
     align-items: center;
-    font-size: 25px;
+    font-size: 15px;
     margin: 0 15px;
     cursor: pointer;
   }
@@ -138,18 +120,14 @@ const NavRight = styled.div`
 const LoginTitle = styled.span`
   cursor: pointer;
   margin: 0 15px;
-  font-size: larger;
+  font-size: 1rem;
 `;
-const SignupTitle = styled.span`
-  cursor: pointer;
-  margin: 0 15px;
-  font-size: larger;
-`;
+const SignupTitle = styled(LoginTitle)``;
 
 const Line = styled.div`
   position: absolute;
   top: 130px;
-  width: 1700px;
+  min-width: 1280px;
   border-bottom: 2px solid #cfd8dc;
 `;
 

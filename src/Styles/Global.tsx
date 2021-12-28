@@ -6,12 +6,14 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     box-sizing: border-box;
   }
+
   body {
     color: #333333;
-    font-size: 13px;
+    font-size: 10px;
     line-height: 16px;
     font-family: "Tw Cen W01 Medium";
     background-color: #fafafa;
+
   }
   ul, li {
     list-style: none;

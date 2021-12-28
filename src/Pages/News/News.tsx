@@ -73,7 +73,7 @@ const News: React.FC = () => {
       <SerachNewsInput placeholder="Search" onChange={wrappedOnChange} />
       <ArticleTemplate isLoading={isLoading}>
         {isLoading ? (
-          <IsLoadingPage> IsLoading ...</IsLoadingPage>
+          <IsLoadingPage> Loading ....</IsLoadingPage>
         ) : (
           news?.articles.map((data, idx) => {
             return <ArticleCard data={data} key={idx} />;
@@ -88,8 +88,8 @@ const NewsBack = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px 100px;
-  width: 100%;
+  min-width: 1280px;
+  padding: 0 20px;
   height: 100%;
 `;
 
@@ -97,9 +97,6 @@ const Title = styled.span`
   font-size: 2rem;
   margin-top: 40px;
   height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 const SerachNewsInput = styled.input`
@@ -117,7 +114,7 @@ const ArticleTemplate = styled.article<StyleProps>`
   grid-template-columns: repeat(5, 1fr);
   place-items: center;
   grid-gap: 30px 0;
-  width: 100%;
+  width: 1200px;
   height: 100%;
   margin-top: 50px;
   border-radius: 5px;
@@ -131,14 +128,7 @@ const ArticleTemplate = styled.article<StyleProps>`
 `;
 
 const IsLoadingPage = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 200px;
-  height: 100px;
-  border: 2px solid gray;
-  border-radius: 40px;
-  font-size: 20px;
+  font-size: 25px;
 `;
 
 export default News;

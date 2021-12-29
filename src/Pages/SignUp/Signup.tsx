@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+import { useDispatch } from "react-redux";
+import { CurrentUserAt } from "../../Store/action/CurrentUserAt";
 import { auth } from "../../FBconfig";
 
 interface PropsType {
@@ -14,11 +16,12 @@ interface StyleProps {
 }
 
 const SignupModal: React.FC<PropsType> = ({ openCloseSignup }) => {
+  const dispatch = useDispatch();
+
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [repassword, setRepassword] = useState<string>("");
   const [isError, setIsError] = useState<string>("");
-  console.log(auth.currentUser, "signup 현재 유저");
 
   const emailValue = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const {
@@ -63,6 +66,9 @@ const SignupModal: React.FC<PropsType> = ({ openCloseSignup }) => {
     ) {
       await auth
         .createUserWithEmailAndPassword(email, password)
+        .then((res: any) => {
+          dispatch(CurrentUserAt(res.user?.uid));
+        })
         .then(openCloseSignup)
         .catch((error) => {
           setIsError(error.message.split(":")[1].split("(")[0]);

@@ -1,6 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Routes from "./Routes";
-// import firebase from "./firebase";
+import { Provider } from "react-redux";
+import { createStore } from "redux";
+import rootReducers from "./Store/reducer/index";
 
-ReactDOM.render(<Routes />, document.getElementById("root"));
+const store = createStore(rootReducers);
+
+ReactDOM.render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <Routes />
+    </Provider>
+  </React.StrictMode>,
+  document.getElementById("root")
+);

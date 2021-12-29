@@ -3,16 +3,17 @@ import { useHistory } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { BiSearchAlt2 } from "react-icons/bi";
 import { AiOutlineMenu } from "react-icons/ai";
-// import SignupModal from "../SignUp/SignupModal";
 import Signup from "../SignUp/Signup";
 import LoginModal from "../Login/LoginModal";
 import { NavTitle, NavTitleType } from "../../Data/Nav/NavTitle";
+// import { RootStateOrAny, useSelector } from "react-redux";
 
 interface StyleProps extends NavTitleType {
   selectedTab: string | undefined;
 }
 
 const Nav: React.FC = () => {
+  // const userUid = useSelector((state: RootStateOrAny) => state.CurrentUserRd);
   const history = useHistory();
   const [openLogin, setOpenLogin] = useState<boolean>(false);
   const [openSign, setOpenSign] = useState<boolean>(false);

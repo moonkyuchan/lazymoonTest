@@ -3,45 +3,73 @@ import styled from "styled-components";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { auth } from "../../FBconfig";
 
-type propsType = {
+interface PropsType {
   openCloseSignup: () => void;
-};
+}
 
-const SignupModal: React.FC<propsType> = ({ openCloseSignup }) => {
+interface StyleProps {
+  emailValidation?: boolean;
+  passwordValidation?: boolean;
+  repasswordValidation?: boolean;
+}
+
+const SignupModal: React.FC<PropsType> = ({ openCloseSignup }) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [repassword, setRepassword] = useState<string>("");
   const [isError, setIsError] = useState<string>("");
+  console.log(auth.currentUser, "signup 현재 유저");
 
-  const emailValue = (value: string): void => {
+  const emailValue = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const {
+      target: { value },
+    } = e;
     setEmail(value);
   };
 
-  const pwValue = (value: string): void => {
+  const pwValue = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const {
+      target: { value },
+    } = e;
     setPassword(value);
   };
 
-  const RepwValue = (value: string): void => {
+  const RepwValue = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const {
+      target: { value },
+    } = e;
     setRepassword(value);
   };
 
+  const emailValidation = (input: string): boolean | undefined => {
+    if (input.length > 6 && input.includes("@") && input.includes("."))
+      return true;
+  };
+
+  const passwordValidation = (input: string): boolean | undefined => {
+    if (input?.length > 6) return true; //
+  };
+
+  const repasswordValidation = (input: string): boolean | undefined => {
+    if (input?.length > 6 && input === password) return true;
+    // regex 온라인에서 찾아서 걍 복붙하는게 깔끔
+  };
+
   const newAccount = async () => {
-    if (password === repassword) {
+    if (
+      emailValidation(email) &&
+      passwordValidation(password) &&
+      repasswordValidation(repassword)
+    ) {
       await auth
         .createUserWithEmailAndPassword(email, password)
+        .then(openCloseSignup)
         .catch((error) => {
-          console.log(error.code);
-          if (error.code === "auth/email-already-in-use") {
-            setIsError(error.message.split(":")[1].split("(")[0]);
-          }
+          setIsError(error.message.split(":")[1].split("(")[0]);
         });
     } else {
       setIsError("password does not match");
     }
-  };
-
-  const resetError = () => {
-    if (isError) setIsError("");
   };
 
   return (
@@ -52,18 +80,32 @@ const SignupModal: React.FC<propsType> = ({ openCloseSignup }) => {
         <InputTemplate>
           <InputBack>
             <InputTitle>Email</InputTitle>
-            <EmailInput />
+            <EmailInput
+              onChange={emailValue}
+              placeholder="Email을 입력하세요."
+              emailValidation={emailValidation(email)}
+            />
           </InputBack>
           <InputBack>
             <InputTitle>Password</InputTitle>
-            <EmailInput />
+            <PwInput
+              onChange={pwValue}
+              type="password"
+              placeholder="비밀번호를 입력하세요."
+              passwordValidation={passwordValidation(password)}
+            />
           </InputBack>
           <InputBack>
             <InputTitle>RePassword</InputTitle>
-            <EmailInput />
+            <RepwInput
+              onChange={RepwValue}
+              type="password"
+              placeholder="비밀번호를 한번 더 입력하세요."
+              repasswordValidation={repasswordValidation(repassword)}
+            />
           </InputBack>
         </InputTemplate>
-        <p style={{ color: "red" }}>{!!isError.length && isError}</p>
+        <ErrorMessage>{!!isError.length && isError}</ErrorMessage>
         <SubmitBack>
           <SubmitBtn onClick={newAccount}>Sign Up</SubmitBtn>
           <GoogleSignup>Google Sign Up</GoogleSignup>
@@ -145,13 +187,31 @@ const InputTitle = styled.span`
   margin-right: 20px;
 `;
 
-const EmailInput = styled.input`
+const EmailInput = styled.input<StyleProps>`
   width: 250px;
   height: 25px;
   padding: 0 20px;
   border: 1px solid #babdbe;
   border-radius: 5px;
   color: grey;
+  font-size: 10px;
+  border-color: ${(props) => (props.emailValidation ? "green" : "red")};
+`;
+
+const PwInput = styled(EmailInput)`
+  border-color: ${(props) => (props.passwordValidation ? "green" : "red")};
+`;
+const RepwInput = styled(EmailInput)`
+  border-color: ${(props) => (props.repasswordValidation ? "green" : "red")};
+`;
+
+const ErrorMessage = styled.span`
+  width: 250px;
+  height: 30px;
+  margin-top: 15px;
+  color: red;
+  text-align: center;
+  font-size: 14px;
 `;
 
 const SubmitBack = styled.section`
@@ -159,7 +219,7 @@ const SubmitBack = styled.section`
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  margin-top: 30px;
+  margin-top: 5px;
 `;
 const SubmitBtn = styled.button`
   font-size: 17px;

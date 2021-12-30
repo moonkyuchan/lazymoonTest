@@ -6,21 +6,18 @@ import { CurrentUserAt } from "../../Store/action/CurrentUserAt";
 import { auth } from "../../FBconfig";
 
 interface PropsType {
-  openCloseSignup: () => void;
+  openCloseLogin: () => void;
 }
 
 interface StyleProps {
   emailValidation?: boolean;
   passwordValidation?: boolean;
-  repasswordValidation?: boolean;
 }
 
-const SignupModal: React.FC<PropsType> = ({ openCloseSignup }) => {
+const Login: React.FC<PropsType> = ({ openCloseLogin }) => {
   const dispatch = useDispatch();
-
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [repassword, setRepassword] = useState<string>("");
   const [isError, setIsError] = useState<string>("");
 
   const emailValue = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -37,13 +34,6 @@ const SignupModal: React.FC<PropsType> = ({ openCloseSignup }) => {
     setPassword(value);
   };
 
-  const RepwValue = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const {
-      target: { value },
-    } = e;
-    setRepassword(value);
-  };
-
   const emailValidation = (input: string): boolean | undefined => {
     if (input.length > 6 && input.includes("@") && input.includes("."))
       return true;
@@ -53,41 +43,23 @@ const SignupModal: React.FC<PropsType> = ({ openCloseSignup }) => {
     if (input?.length > 6) return true; //
   };
 
-  const repasswordValidation = (input: string): boolean | undefined => {
-    if (input?.length > 6 && input === password) return true;
-    // regex 온라인에서 찾아서 걍 복붙하는게 깔끔
-  };
-
-  const newAccount = async () => {
-    if (
-      emailValidation(email) &&
-      passwordValidation(password) &&
-      repasswordValidation(repassword)
-    ) {
+  const LoginAccount = async () => {
+    if (emailValidation(email) && passwordValidation(password)) {
       await auth
-        .createUserWithEmailAndPassword(email, password)
+        .signInWithEmailAndPassword(email, password)
         .then((res: any) => {
           dispatch(CurrentUserAt(res.user?.uid));
-        })
-        .then(openCloseSignup)
-        .catch((error) => {
-          setIsError(error.message.split(":")[1].split("(")[0]);
         });
     } else {
       setIsError("password does not match");
     }
-    // await auth
-    //   .signInWithEmailAndPassword(email, password)
-    //   .then((res) => {
-    //     console.log(res, "local 저장가능?");
-    //   })
   };
 
   return (
-    <SignUpBack>
+    <LoginBack>
       <ModalContainer>
-        <AiOutlineCloseCircle className="closebtn" onClick={openCloseSignup} />
-        <Title>Sign up</Title>
+        <AiOutlineCloseCircle className="closebtn" onClick={openCloseLogin} />
+        <Title>Login</Title>
         <InputTemplate>
           <InputBack>
             <InputTitle>Email</InputTitle>
@@ -106,27 +78,18 @@ const SignupModal: React.FC<PropsType> = ({ openCloseSignup }) => {
               passwordValidation={passwordValidation(password)}
             />
           </InputBack>
-          <InputBack>
-            <InputTitle>RePassword</InputTitle>
-            <RepwInput
-              onChange={RepwValue}
-              type="password"
-              placeholder="비밀번호를 한번 더 입력하세요."
-              repasswordValidation={repasswordValidation(repassword)}
-            />
-          </InputBack>
         </InputTemplate>
         <ErrorMessage>{!!isError.length && isError}</ErrorMessage>
         <SubmitBack>
-          <SubmitBtn onClick={newAccount}>Sign Up</SubmitBtn>
+          <SubmitBtn onClick={LoginAccount}>Login</SubmitBtn>
           <GoogleSignup>Google Sign Up</GoogleSignup>
         </SubmitBack>
       </ModalContainer>
-    </SignUpBack>
+    </LoginBack>
   );
 };
 
-const SignUpBack = styled.div`
+const LoginBack = styled.div`
   position: fixed;
   top: 0;
   left: 0;
@@ -135,7 +98,6 @@ const SignUpBack = styled.div`
   background-color: rgba(0, 0, 0, 0.4);
   z-index: 1;
 `;
-
 const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -145,7 +107,7 @@ const ModalContainer = styled.div`
   top: 50%;
   transform: translate(-50%, -50%);
   width: 500px;
-  height: 600px;
+  height: 500px;
   padding: 45px;
   background: #fafafa;
   border-radius: 5px;
@@ -178,7 +140,7 @@ const InputTemplate = styled.section`
   align-items: center;
   justify-content: center;
   width: 400px;
-  min-height: 55%;
+  min-height: 180px;
   margin-top: 25px;
   border: 1px solid #babdbe;
   border-radius: 5px;
@@ -211,9 +173,6 @@ const EmailInput = styled.input<StyleProps>`
 
 const PwInput = styled(EmailInput)`
   border-color: ${(props) => (props.passwordValidation ? "green" : "red")};
-`;
-const RepwInput = styled(EmailInput)`
-  border-color: ${(props) => (props.repasswordValidation ? "green" : "red")};
 `;
 
 const ErrorMessage = styled.span`
@@ -248,4 +207,4 @@ const SubmitBtn = styled.button`
 
 const GoogleSignup = styled(SubmitBtn)``;
 
-export default SignupModal;
+export default Login;

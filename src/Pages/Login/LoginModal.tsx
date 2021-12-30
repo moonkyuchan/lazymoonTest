@@ -28,7 +28,7 @@ const LoginModal: React.FC<PropsType> = ({ openCloseLogin }) => {
   );
 };
 
-const SignUpBack = styled.div`
+const SignUpBack = styled.article`
   position: fixed;
   top: 0;
   left: 0;

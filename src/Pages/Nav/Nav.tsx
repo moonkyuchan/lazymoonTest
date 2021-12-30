@@ -1,23 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { BiSearchAlt2 } from "react-icons/bi";
 import { AiOutlineMenu } from "react-icons/ai";
 import Signup from "../SignUp/Signup";
-import LoginModal from "../Login/LoginModal";
+import Login from "../Login/Login";
 import { NavTitle, NavTitleType } from "../../Data/Nav/NavTitle";
-// import { RootStateOrAny, useSelector } from "react-redux";
+import { RootStateOrAny, useSelector, useDispatch } from "react-redux";
+import { LogOutAt } from "../../Store/action/CurrentUserAt";
 
 interface StyleProps extends NavTitleType {
   selectedTab: string | undefined;
 }
 
 const Nav: React.FC = () => {
-  // const userUid = useSelector((state: RootStateOrAny) => state.CurrentUserRd);
+  const dispatch = useDispatch();
+  const userUid = useSelector((state: RootStateOrAny) => state.CurrentUserRd);
   const history = useHistory();
   const [openLogin, setOpenLogin] = useState<boolean>(false);
   const [openSign, setOpenSign] = useState<boolean>(false);
   const [selectedTab, setSelectedTab] = useState<string | undefined>("HOME");
+
+  // useEffect(() => {
+
+  // }, [userUid])
 
   const handleNavTitle = (data: NavTitleType) => {
     if (data?.path) {
@@ -32,6 +38,10 @@ const Nav: React.FC = () => {
 
   const openCloseLogin = () => {
     setOpenLogin(!openLogin);
+  };
+
+  const logOutUser = () => {
+    dispatch(LogOutAt(userUid));
   };
 
   return (
@@ -53,10 +63,16 @@ const Nav: React.FC = () => {
       </NavLeft>
       <NavCenter>LazyMoon</NavCenter>
       <NavRight>
-        <LoginTitle onClick={openCloseLogin}>Login</LoginTitle>
-        {openLogin && <LoginModal openCloseLogin={openCloseLogin} />}
-        <SignupTitle onClick={openCloseSignup}>Sign up</SignupTitle>
-        {openSign && <Signup openCloseSignup={openCloseSignup} />}
+        {userUid ? (
+          <LogoutTitle onClick={logOutUser}>Log out</LogoutTitle>
+        ) : (
+          <>
+            <LoginTitle onClick={openCloseLogin}>Login</LoginTitle>
+            {openLogin && <Login openCloseLogin={openCloseLogin} />}
+            <SignupTitle onClick={openCloseSignup}>Sign up</SignupTitle>
+            {openSign && <Signup openCloseSignup={openCloseSignup} />}
+          </>
+        )}
         <BiSearchAlt2 className="search" />
         <AiOutlineMenu className="menuBar" />
       </NavRight>
@@ -124,6 +140,7 @@ const LoginTitle = styled.span`
   font-size: 1rem;
 `;
 const SignupTitle = styled(LoginTitle)``;
+const LogoutTitle = styled(LoginTitle)``;
 
 const Line = styled.div`
   position: absolute;

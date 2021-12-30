@@ -26,6 +26,8 @@ const Visitor: React.FC = () => {
         placeholder="방명록을 남겨 주세요."
         maxLength={100}
       ></CommentInputBack>
+      <UploadButton>IMG Upload</UploadButton>
+      <SubmitButton>Submit</SubmitButton>
     </VisitorBack>
   );
 };
@@ -60,6 +62,29 @@ const CommentInputBack = styled.textarea`
   ::placeholder {
     color: #c7c7c7c7;
   }
+  resize: none;
+`;
+
+const SubmitButton = styled.button`
+  width: 60px;
+  height: 30px;
+  background-color: #f5f5f5;
+  border: 2px solid gray;
+  border-radius: 10px;
+  position: relative;
+  left: 360px;
+  bottom: 71px;
+  &:hover {
+    background-color: grey;
+    border-color: black;
+    color: #fafafa;
+  }
+`;
+
+const UploadButton = styled(SubmitButton)`
+  width: 80px;
+  margin-right: 10px;
+  font-size: 9px;
 `;
 
 export default Visitor;

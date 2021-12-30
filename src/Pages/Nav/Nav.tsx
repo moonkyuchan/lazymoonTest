@@ -140,7 +140,7 @@ const NavRight = styled.div`
 const LoginTitle = styled.span`
   cursor: pointer;
   margin: 0 15px;
-  font-size: 1rem;
+  font-size: 12px;
 `;
 const SignupTitle = styled(LoginTitle)``;
 const LogoutTitle = styled(LoginTitle)``;

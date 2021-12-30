@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { BiSearchAlt2 } from "react-icons/bi";
@@ -30,6 +30,9 @@ const Nav: React.FC = () => {
       history.push(data.path);
     }
     setSelectedTab(data.title);
+    if (data.title === "Github") {
+      window.open("https://github.com/moonkyuchan");
+    }
   };
 
   const openCloseSignup = (): void => {

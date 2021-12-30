@@ -9,8 +9,8 @@ const Home = () => {
   return (
     <MainBack>
       <MainTemplate1>
-        <Visitor></Visitor>
-        <MyPhoto></MyPhoto>
+        <Visitor />
+        <MyPhoto />
       </MainTemplate1>
     </MainBack>
   );
@@ -27,7 +27,7 @@ const MainBack = styled.main`
 
 const MainTemplate1 = styled.section`
   display: flex;
-  width: 50rem;
+  width: 1200px;
   height: 100%;
 `;
 export default Home;

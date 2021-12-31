@@ -3,7 +3,8 @@ import styled from "styled-components";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 import { CurrentUserAt } from "../../Store/action/CurrentUserAt";
-import { auth } from "../../FBconfig";
+import { auth, Providers } from "../../FBconfig";
+import { FcGoogle } from "react-icons/fc";
 
 interface PropsType {
   openCloseLogin: () => void;
@@ -55,6 +56,14 @@ const Login: React.FC<PropsType> = ({ openCloseLogin }) => {
     }
   };
 
+  const googleLogin = async () => {
+    await auth
+      .signInWithPopup(Providers.google)
+      .then((res: any) => dispatch(CurrentUserAt(res.user?.uid)))
+      .then(openCloseLogin)
+      .catch((err) => console.log(err));
+  };
+
   return (
     <LoginBack>
       <ModalContainer>
@@ -82,7 +91,10 @@ const Login: React.FC<PropsType> = ({ openCloseLogin }) => {
         <ErrorMessage>{!!isError.length && isError}</ErrorMessage>
         <SubmitBack>
           <SubmitBtn onClick={LoginAccount}>Login</SubmitBtn>
-          <GoogleSignup>Google Sign Up</GoogleSignup>
+          <GoogleSignup onClick={googleLogin}>
+            <span>Google Login</span>
+            <FcGoogle className="google" />
+          </GoogleSignup>
         </SubmitBack>
       </ModalContainer>
     </LoginBack>
@@ -205,6 +217,12 @@ const SubmitBtn = styled.button`
   margin-top: 10px;
 `;
 
-const GoogleSignup = styled(SubmitBtn)``;
+const GoogleSignup = styled(SubmitBtn)`
+  .google {
+    position: relative;
+    margin-left: 6px;
+    top: 4px;
+  }
+`;
 
 export default Login;

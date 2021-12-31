@@ -22,8 +22,8 @@ const Nav: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState<string | undefined>("HOME");
 
   // useEffect(() => {
-
-  // }, [userUid])
+  //   console.log("nav useffect [ userUid ] ");
+  // }, [userUid]);
 
   const handleNavTitle = (data: NavTitleType) => {
     if (data?.path) {
@@ -140,7 +140,7 @@ const NavRight = styled.div`
 const LoginTitle = styled.span`
   cursor: pointer;
   margin: 0 15px;
-  font-size: 12px;
+  font-size: 15px;
 `;
 const SignupTitle = styled(LoginTitle)``;
 const LogoutTitle = styled(LoginTitle)``;

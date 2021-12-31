@@ -1,33 +1,57 @@
-import React from "react";
+import React, { useState, useEffect, Dispatch } from "react";
 import styled from "styled-components";
 import CommentCard from "../../../Components/Common/CommentCard";
+import { db } from "../../../FBconfig";
 
 // interface PropsType {
 //   maxlength: string;
 // }
 
 const Visitor: React.FC = () => {
+  const [comment, setComment] = useState<string>("");
+  const [commentData, setCommentData] = useState([]);
+
+  const getCommentData = async () => {
+    const data = await db.collection("comment").get();
+    data.forEach((document) => {
+      // setCommentData((prev) => [document.data(), ...prev]); // 블로그 포스팅 필요
+    });
+  };
+
+  useEffect(() => {
+    getCommentData();
+  }, []);
+
+  const commentValue = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const {
+      target: { value },
+    } = e;
+    setComment(value);
+  };
+
+  const Submit = async () => {
+    console.log("clicked");
+
+    await db.collection("comment").add({
+      comment,
+      createAt: Date.now(),
+    });
+    setComment("");
+  };
+
   return (
     <VisitorBack>
       <VisitorTemplate>
-        <CommentCard />
-        <CommentCard />
-        <CommentCard />
-        <CommentCard />
-        <CommentCard />
-        <CommentCard />
-        <CommentCard />
-        <CommentCard />
-        <CommentCard />
-        <CommentCard />
         <CommentCard />
       </VisitorTemplate>
       <CommentInputBack
         placeholder="방명록을 남겨 주세요."
         maxLength={100}
+        value={comment}
+        onChange={commentValue}
       ></CommentInputBack>
       <UploadButton>IMG Upload</UploadButton>
-      <SubmitButton>Submit</SubmitButton>
+      <SubmitButton onClick={Submit}>Submit</SubmitButton>
     </VisitorBack>
   );
 };

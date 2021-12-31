@@ -2,10 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import Visitor from "./Components/Visitor";
 import MyPhoto from "./Components/MyPhoto";
-import { auth } from "../../FBconfig";
 
 const Home = () => {
-  console.log(auth.currentUser, " Home 현재 유저");
   return (
     <MainBack>
       <MainTemplate1>

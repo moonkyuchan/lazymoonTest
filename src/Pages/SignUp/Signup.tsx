@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+import { FcGoogle } from "react-icons/fc";
 import { useDispatch } from "react-redux";
 import { CurrentUserAt } from "../../Store/action/CurrentUserAt";
-import { auth } from "../../FBconfig";
+import { auth, Providers } from "../../FBconfig";
 
 interface PropsType {
   openCloseSignup: () => void;
@@ -16,6 +17,7 @@ interface StyleProps {
 }
 
 const SignupModal: React.FC<PropsType> = ({ openCloseSignup }) => {
+  console.log(Providers);
   const dispatch = useDispatch();
 
   const [email, setEmail] = useState<string>("");
@@ -56,6 +58,14 @@ const SignupModal: React.FC<PropsType> = ({ openCloseSignup }) => {
   const repasswordValidation = (input: string): boolean | undefined => {
     if (input?.length > 6 && input === password) return true;
     // regex 온라인에서 찾아서 걍 복붙하는게 깔끔
+  };
+
+  const googleSignup = async () => {
+    await auth
+      .signInWithPopup(Providers.google)
+      .then((res: any) => dispatch(CurrentUserAt(res.user?.uid)))
+      .then(openCloseSignup)
+      .catch((err) => console.log(err));
   };
 
   const newAccount = async () => {
@@ -119,7 +129,10 @@ const SignupModal: React.FC<PropsType> = ({ openCloseSignup }) => {
         <ErrorMessage>{!!isError.length && isError}</ErrorMessage>
         <SubmitBack>
           <SubmitBtn onClick={newAccount}>Sign Up</SubmitBtn>
-          <GoogleSignup>Google Sign Up</GoogleSignup>
+          <GoogleSignup onClick={googleSignup}>
+            <span>Google Sign Up</span>
+            <FcGoogle className="google" />
+          </GoogleSignup>
         </SubmitBack>
       </ModalContainer>
     </SignUpBack>
@@ -246,6 +259,12 @@ const SubmitBtn = styled.button`
   margin-top: 10px;
 `;
 
-const GoogleSignup = styled(SubmitBtn)``;
+const GoogleSignup = styled(SubmitBtn)`
+  .google {
+    position: relative;
+    margin-left: 6px;
+    top: 4px;
+  }
+`;
 
 export default SignupModal;

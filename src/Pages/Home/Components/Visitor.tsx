@@ -1,25 +1,32 @@
-import React, { useState, useEffect, Dispatch } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import CommentCard from "../../../Components/Common/CommentCard";
 import { db } from "../../../FBconfig";
+import { useSelector, RootStateOrAny } from "react-redux";
 
-// interface PropsType {
-//   maxlength: string;
-// }
+export interface CollectionType {
+  comment: string;
+  createAt: number;
+  id: string;
+  userUid: string;
+}
 
 const Visitor: React.FC = () => {
+  const userUid = useSelector((state: RootStateOrAny) => state.CurrentUserRd);
   const [comment, setComment] = useState<string>("");
-  const [commentData, setCommentData] = useState([]);
-
-  const getCommentData = async () => {
-    const data = await db.collection("comment").get();
-    data.forEach((document) => {
-      // setCommentData((prev) => [document.data(), ...prev]); // 블로그 포스팅 필요
-    });
-  };
+  const [commentData, setCommentData] = useState<CollectionType[]>([]);
 
   useEffect(() => {
-    getCommentData();
+    db.collection("comment").onSnapshot((snapshot: any) => {
+      const commentArray = snapshot?.docs?.map((doc: any) => {
+        return { id: doc.id, ...doc.data() };
+      });
+
+      // for (let i = 0; i < commentArray.length; i++) {
+      //   console.log(commentArray[i]);
+      // }
+      setCommentData(commentArray);
+    });
   }, []);
 
   const commentValue = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -30,11 +37,10 @@ const Visitor: React.FC = () => {
   };
 
   const Submit = async () => {
-    console.log("clicked");
-
     await db.collection("comment").add({
       comment,
       createAt: Date.now(),
+      userUid: userUid,
     });
     setComment("");
   };
@@ -42,7 +48,15 @@ const Visitor: React.FC = () => {
   return (
     <VisitorBack>
       <VisitorTemplate>
-        <CommentCard />
+        {commentData?.map((data) => {
+          return (
+            <CommentCard
+              key={data.id}
+              data={data}
+              isOwner={data.userUid === userUid}
+            />
+          );
+        })}
       </VisitorTemplate>
       <CommentInputBack
         placeholder="방명록을 남겨 주세요."
@@ -64,6 +78,7 @@ const VisitorBack = styled.section`
 
 const VisitorTemplate = styled.article`
   display: grid;
+  grid-template-rows: repeat(1fr, 120px);
   place-items: center;
   width: 540px;
   height: 680px;
@@ -79,12 +94,12 @@ const CommentInputBack = styled.textarea`
   padding: 15px 30px;
   position: relative;
   left: 15px;
-  bottom: 50px;
+  bottom: 30px;
   border: 2px solid gray;
   border-radius: 15px;
   background-color: #fafafa;
   ::placeholder {
-    color: #c7c7c7c7;
+    color: #c7c7c7;
   }
   resize: none;
 `;

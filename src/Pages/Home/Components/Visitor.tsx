@@ -64,7 +64,6 @@ const Visitor: React.FC = () => {
         value={comment}
         onChange={commentValue}
       ></CommentInputBack>
-      <UploadButton>IMG Upload</UploadButton>
       <SubmitButton onClick={Submit}>Submit</SubmitButton>
     </VisitorBack>
   );
@@ -106,24 +105,18 @@ const CommentInputBack = styled.textarea`
 
 const SubmitButton = styled.button`
   width: 60px;
-  height: 30px;
+  height: 25px;
   background-color: #f5f5f5;
   border: 2px solid gray;
   border-radius: 10px;
   position: relative;
-  left: 360px;
-  bottom: 71px;
+  left: 425px;
+  bottom: 65px;
   &:hover {
     background-color: grey;
     border-color: black;
     color: #fafafa;
   }
-`;
-
-const UploadButton = styled(SubmitButton)`
-  width: 80px;
-  margin-right: 10px;
-  font-size: 9px;
 `;
 
 export default Visitor;

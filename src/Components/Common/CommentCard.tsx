@@ -11,7 +11,6 @@ interface CommentCardProps {
 const CommentCard: React.FC<CommentCardProps> = ({ data, isOwner }) => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [newComment, setNewComment] = useState<string>("");
-  console.log(newComment);
 
   const deleteComment = async () => {
     const ok = window.confirm("정말 삭제하시겠습니까?");
@@ -20,7 +19,8 @@ const CommentCard: React.FC<CommentCardProps> = ({ data, isOwner }) => {
     }
   };
 
-  const toggleEdit = () => {
+  const toggleEdit = (comment: string) => {
+    setNewComment(comment);
     setIsEdit((prev) => !prev);
   };
 
@@ -31,7 +31,8 @@ const CommentCard: React.FC<CommentCardProps> = ({ data, isOwner }) => {
     setNewComment(value);
   };
 
-  const onSubmitEdit = async () => {
+  const onSubmitEdit = async (e: React.FormEvent) => {
+    e.preventDefault();
     await db.doc(`comment/${data.id}`).update({
       comment: newComment,
     });
@@ -44,10 +45,15 @@ const CommentCard: React.FC<CommentCardProps> = ({ data, isOwner }) => {
         {isEdit ? (
           <>
             <FormBack>
-              <Edit type="text" placeholder="EDIT..." onChange={onChangeEdit} />
+              <Edit
+                type="text"
+                placeholder="EDIT..."
+                onChange={onChangeEdit}
+                value={newComment}
+              />
               <BtnWrap>
                 <Submit onClick={onSubmitEdit}>Update</Submit>
-                <Cancel>Cancel</Cancel>
+                <Cancel onClick={() => toggleEdit(data.comment)}>Cancel</Cancel>
               </BtnWrap>
             </FormBack>
           </>
@@ -57,7 +63,7 @@ const CommentCard: React.FC<CommentCardProps> = ({ data, isOwner }) => {
             {isOwner && (
               <BtnWrap>
                 <DeleteBtn onClick={deleteComment}>Delete</DeleteBtn>
-                <EditBtn onClick={toggleEdit}>Edit</EditBtn>
+                <EditBtn onClick={() => toggleEdit(data.comment)}>Edit</EditBtn>
               </BtnWrap>
             )}
           </>
@@ -115,6 +121,7 @@ const Cancel = styled(Submit)`
 `;
 
 const CommentContents = styled.div`
+  font-size: 15px;
   width: 400px;
   height: 90px;
   border: 1px solid #c7c7c7;

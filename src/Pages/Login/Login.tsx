@@ -11,8 +11,8 @@ interface PropsType {
 }
 
 interface StyleProps {
-  emailValidation?: boolean;
-  passwordValidation?: boolean;
+  emailValidation?: string;
+  passwordValidation?: string;
 }
 
 const Login: React.FC<PropsType> = ({ openCloseLogin }) => {
@@ -35,13 +35,20 @@ const Login: React.FC<PropsType> = ({ openCloseLogin }) => {
     setPassword(value);
   };
 
-  const emailValidation = (input: string): boolean | undefined => {
-    if (input.length > 6 && input.includes("@") && input.includes("."))
-      return true;
+  const emailValidation = (input: string): string => {
+    if (input.length === 0) {
+      return "gray";
+    } else if (input.length > 6 && input.includes("@") && input.includes(".")) {
+      return "green";
+    } else return "red";
   };
 
-  const passwordValidation = (input: string): boolean | undefined => {
-    if (input?.length > 6) return true; //
+  const passwordValidation = (input: string): string => {
+    if (input.length === 0) {
+      return "gray";
+    } else if (input?.length > 6) {
+      return "green";
+    } else return "red";
   };
 
   const LoginAccount = async () => {
@@ -180,11 +187,11 @@ const EmailInput = styled.input<StyleProps>`
   border-radius: 5px;
   color: grey;
   font-size: 10px;
-  border-color: ${(props) => (props.emailValidation ? "green" : "red")};
+  border-color: ${(props) => props.emailValidation};
 `;
 
 const PwInput = styled(EmailInput)`
-  border-color: ${(props) => (props.passwordValidation ? "green" : "red")};
+  border-color: ${(props) => props.passwordValidation};
 `;
 
 const ErrorMessage = styled.span`

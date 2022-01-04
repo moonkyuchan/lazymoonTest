@@ -11,9 +11,9 @@ interface PropsType {
 }
 
 interface StyleProps {
-  emailValidation?: boolean;
-  passwordValidation?: boolean;
-  repasswordValidation?: boolean;
+  emailValidation?: string;
+  passwordValidation?: string;
+  repasswordValidation?: string;
 }
 
 const SignupModal: React.FC<PropsType> = ({ openCloseSignup }) => {
@@ -46,17 +46,24 @@ const SignupModal: React.FC<PropsType> = ({ openCloseSignup }) => {
     setRepassword(value);
   };
 
-  const emailValidation = (input: string): boolean | undefined => {
+  const emailValidation = (input: string): string => {
+    if (!input.length) return "gray";
     if (input.length > 6 && input.includes("@") && input.includes("."))
-      return true;
+      return "green";
+    return "red";
   };
 
-  const passwordValidation = (input: string): boolean | undefined => {
-    if (input?.length > 6) return true; //
+  const passwordValidation = (input: string): string => {
+    if (!input.length) return "gray";
+    if (input?.length > 6) return "green";
+    return "red";
   };
 
-  const repasswordValidation = (input: string): boolean | undefined => {
-    if (input?.length > 6 && input === password) return true;
+  const repasswordValidation = (input: string): string => {
+    if (!input.length) return "gray";
+    if (input?.length > 6 && input === password) return "green";
+    return "red";
+
     // regex 온라인에서 찾아서 걍 복붙하는게 깔끔
   };
 
@@ -219,14 +226,14 @@ const EmailInput = styled.input<StyleProps>`
   border-radius: 5px;
   color: grey;
   font-size: 10px;
-  border-color: ${(props) => (props.emailValidation ? "green" : "red")};
+  border-color: ${(props) => props.emailValidation};
 `;
 
 const PwInput = styled(EmailInput)`
-  border-color: ${(props) => (props.passwordValidation ? "green" : "red")};
+  border-color: ${(props) => props.passwordValidation};
 `;
 const RepwInput = styled(EmailInput)`
-  border-color: ${(props) => (props.repasswordValidation ? "green" : "red")};
+  border-color: ${(props) => props.repasswordValidation};
 `;
 
 const ErrorMessage = styled.span`

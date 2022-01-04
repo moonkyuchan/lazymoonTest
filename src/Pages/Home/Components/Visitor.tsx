@@ -21,11 +21,12 @@ const Visitor: React.FC = () => {
       const commentArray = snapshot?.docs?.map((doc: any) => {
         return { id: doc.id, ...doc.data() };
       });
-
-      // for (let i = 0; i < commentArray.length; i++) {
-      //   console.log(commentArray[i]);
-      // }
-      setCommentData(commentArray);
+      const sortedComment = commentArray.sort(
+        (a: CollectionType, b: CollectionType) => {
+          return a.createAt < b.createAt ? 1 : -1;
+        }
+      );
+      setCommentData(sortedComment);
     });
   }, []);
 
@@ -37,11 +38,12 @@ const Visitor: React.FC = () => {
   };
 
   const Submit = async () => {
-    await db.collection("comment").add({
-      comment,
-      createAt: Date.now(),
-      userUid: userUid,
-    });
+    comment &&
+      (await db.collection("comment").add({
+        comment,
+        createAt: Date.now(),
+        userUid: userUid,
+      }));
     setComment("");
   };
 
@@ -88,12 +90,12 @@ const VisitorTemplate = styled.article`
 `;
 
 const CommentInputBack = styled.textarea`
-  width: 510px;
+  width: 540px;
   height: 85px;
   padding: 15px 30px;
   position: relative;
-  left: 15px;
-  bottom: 30px;
+  /* left: 15px; */
+  bottom: 15px;
   border: 2px solid gray;
   border-radius: 15px;
   background-color: #fafafa;
@@ -110,8 +112,8 @@ const SubmitButton = styled.button`
   border: 2px solid gray;
   border-radius: 10px;
   position: relative;
-  left: 425px;
-  bottom: 65px;
+  left: 445px;
+  bottom: 50px;
   &:hover {
     background-color: grey;
     border-color: black;

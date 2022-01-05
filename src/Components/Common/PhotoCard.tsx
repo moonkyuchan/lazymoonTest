@@ -6,7 +6,7 @@ interface PropsType {
 }
 
 const PhotoCard: React.FC<PropsType> = ({ data }) => {
-  return <PhotoCardBack src={data}></PhotoCardBack>;
+  return <PhotoCardBack src={data.imgURL}></PhotoCardBack>;
 };
 
 const PhotoCardBack = styled.img`
@@ -17,7 +17,7 @@ const PhotoCardBack = styled.img`
   border-radius: 5px;
   cursor: pointer;
   &:hover {
-    transform: scale(1.2, 1.2);
+    transform: scale(1.5, 1.5);
   }
 `;
 

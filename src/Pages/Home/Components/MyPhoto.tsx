@@ -8,13 +8,13 @@ interface ImgDataType {}
 const MyPhoto: React.FC = () => {
   const [imgFile, setImgFile] = useState<any>("");
   const [imgArray, setImgArray] = useState<ImgDataType[]>([]);
-  console.log(imgArray, "이미지 어레이 스테이트");
 
   useEffect(() => {
     db.collection("image").onSnapshot((snapshot: any) => {
-      snapshot?.docs?.forEach((doc: any) => {
-        const data = doc.data;
+      const getImgArray = snapshot?.docs?.map((doc: any) => {
+        return doc.data();
       });
+      setImgArray(getImgArray);
     });
   }, []);
 
@@ -90,6 +90,7 @@ const MyPhoto: React.FC = () => {
       />
       <UploadBtn htmlFor="input-file">Upload</UploadBtn>
       <SaveBtun onClick={goToStorage}>Save</SaveBtun>
+      {imgFile && <PreviewImg src={imgFile} />}
     </MyPhotoBack>
   );
 };
@@ -153,5 +154,13 @@ const SaveBtun = styled.button`
     border-color: black;
     color: #fafafa;
   }
+`;
+const PreviewImg = styled.img`
+  position: absolute;
+  left: 62.7%;
+  bottom: 45%;
+  width: 150px;
+  height: 150px;
+  background-color: pink;
 `;
 export default MyPhoto;

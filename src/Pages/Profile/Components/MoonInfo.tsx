@@ -15,7 +15,7 @@ const MoonInfo: React.FC = () => {
             <span className="frontend">Frontend Developer</span>
           </Name>
           <ContactBack>
-            <span>Concat.</span>
+            <span>Contact.</span>
             <RowWrap>
               <span>{`📞  Phone : 010-9343-3614`}</span>
               <span>{`📒  Blog : https://velog.io/@vlrtpfdkxm `}</span>
@@ -47,6 +47,7 @@ const ProfileImg = styled.img`
   width: 250px;
   height: 250px;
   border-radius: 50%;
+  margin-right: 20px;
 `;
 
 const IntroduceWrap = styled.div`

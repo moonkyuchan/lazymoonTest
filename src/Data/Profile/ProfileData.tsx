@@ -1,10 +1,17 @@
-export interface ProfileDataType {
+export interface IntroduceType {
   id: number;
-  title?: string;
+  title: string;
   contents: string;
 }
+export interface workExperienceType {
+  id: number;
+  title: string;
+  intro: string;
+  period: string;
+  task: string[];
+}
 
-export const introduce: ProfileDataType[] = [
+export const introduce: IntroduceType[] = [
   {
     id: 0,
     title: `🔶 끊임없이 문제와 직면하고, 지속적인 고민과 탐구를 중요시하는 개발자입니다.`,
@@ -24,5 +31,35 @@ export const introduce: ProfileDataType[] = [
     id: 3,
     title: ``,
     contents: `🙆🏻‍♂️ 개발자로서 공부는 본질에 다가서려는 노력이고 실력은 고통의 총합이라고 생각합니다. 사용자 인터페이스의 개선을 위해 항상 고민하며, 아름답고 효율적인 UI를 구현하기 위해 탐구하고 분석하는 일에 재미를 느낍니다. 향후 본질에 가까운 지식을 지향하고 중요한 것과 우선순위를 구별하는 혜안을 갖기를 원합니다.`,
+  },
+];
+
+export const workExperience: workExperienceType[] = [
+  {
+    id: 0,
+    title: `UITI`,
+    intro: `위티는 GIS 분야 국내 최고의 데이터 가공/분석 기술을 기반으로 혁신적인 부동산 서비스를 제공합니다.`,
+    period: `2021.02 ~ 2021.03`,
+    task: [
+      `자체 서비스 페이지 UI를 타입스크립트 + 리액트 적용하여 리뉴얼 작업`,
+      `TypeScript, Next.js 개발환경 경험`,
+      `TypeScript, React, Styled-Components, Story-book 적용`,
+      `TypeScript, React, Sass, Next.js, Redux Toolkit, Figma`,
+      `Asana, Gitlab, Notion, Slack, XD 툴을 이용한 팀원간 협업`,
+    ],
+  },
+  {
+    id: 1,
+    title: `Break & Company`,
+    intro: `브레이크앤컴퍼니는 스포츠 카드 Grading 및 Trading 플랫폼 서비스를 제공합니다.`,
+    period: `2021.05 ~ 2021.09`,
+    task: [
+      `Break Market 신규 서비스 개발 참여`,
+      `Admin Page 기획`,
+      `TypeScript, Next.js UI 마크업 및 기능구현`,
+      `TypeScript, React, Sass, Next.js, Redux Toolkit, Figma`,
+      `Github, Notion, Slack 툴을 이용한 팀원간 협업`,
+      `Story Point 제도를 적용하여 팀원간 효율적인 분업 및 개발환경 경험`,
+    ],
   },
 ];
